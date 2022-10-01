@@ -19,12 +19,32 @@ app.get('/:bucket/*', async (req, res) => {
   w = parseInt(w) || null;
   h = parseInt(h) || null;
   q = parseInt(q) || 65;
+  let signedUrl = ""
+  try {
+    signedUrl = await getSignedUrl(bucket, key);
+  } catch (error) {
+    res.status(400).send("Image path is invalid");
+    return;
+  }
 
-  const signedUrl = await getSignedUrl(bucket, key);
   const mimeType = signedUrl.split('?')[0].split('.').pop().toLowerCase();
 
-  const image = await axios.get(signedUrl, { responseType: 'arraybuffer' }).then(res => res.data);
-  const resizedImage = await resizeImage(image, w, h, q);
+  let image
+  try {
+    image = await axios.get(signedUrl, { responseType: 'arraybuffer' }).then(res => res.data);
+  } catch (error) {
+    res.status(400).send("Image path is invalid");
+    return;
+  }
+
+  let resizedImage
+  try {
+    resizedImage = await resizeImage(image, w, h, q);
+  } catch (error) {
+    res.status(400).send("Resize failed");
+    return;
+  }
+
 
   res.set('Content-Type', `image/${mimeType}`);
   res.send(resizedImage);
@@ -59,6 +79,3 @@ async function resizeImage(image, width, height, quality) {
 app.listen(port, () => {
   console.log(`Listening at port ${port}`);
 });
-
-
-
