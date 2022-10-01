@@ -18,7 +18,8 @@ app.get('/:bucket/*', async (req, res) => {
   let { w, h, q } = req.query;
   w = parseInt(w) || null;
   h = parseInt(h) || null;
-  q = parseInt(q) || 65;
+  q = parseInt(q) || process.env.IMAGE_QUALITY || 80;
+
   let signedUrl = ""
   try {
     signedUrl = await getSignedUrl(bucket, key);
