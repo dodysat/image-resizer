@@ -139,7 +139,7 @@ Example:
 <!-- ROADMAP -->
 ## Roadmap
 - [x] Initial release 
-- [] Supports secure image capture using dynamic token-based authentication
+- [ ] Supports secure image capture using dynamic token-based authentication
 
 
 See the [open issues](https://github.com/dodysat/image-resizer/issues) for a full list of proposed features (and known issues).
