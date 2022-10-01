@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  image-resizer:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - ${PORT}:${PORT}
+    volumes:
+      - ./src:/home/node/src
+    command: npm run dev
